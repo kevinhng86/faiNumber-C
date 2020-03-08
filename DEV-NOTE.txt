@@ -1,0 +1,83 @@
+**NOTE: This document will get update**
+
+****************************************************************************
+* Avoid using char value a actual single char like '0' as much             *
+* as possible. Instead, use their ASCII integer value. This is because     *
+* it easier is to translate the code between languages. As depend on       *
+* the language, the '0' might have to take an additional step to be        *
+* converted to 48.                                                         *
+*                                                                          *
+* This project only support two's complements for sign type.               *
+* For Endianness, v-mp supports Little and Big Endian. All other types     *
+* can be disregarded.                                                      *
+* This project does not yet support c89(ANSI C). The lowest minimum is     *
+* c99(ISO/IEC 9899:1999)                                                   *
+****************************************************************************
+
+=========================C-STANDARD=========================================
+= 6.3.1.3 Signed and unsigned integers                                     =
+=                                                                          =
+=  1 When a value with integer type is converted to another integer        =
+=    type other than _Bool, if the value can be represented by the         =
+=    new type, it is unchanged.                                            =
+=                                                                          =
+=  2 Otherwise, if the new type is unsigned, the value is converted        =
+=    by repeatedly adding or subtracting one more than the maximum value   =
+=    that can be represented in the new type until the value is in the     =
+=    range of the new type.                                                =
+=                                                                          =
+=  3 Otherwise, the new type is signed and the value cannot be             =
+=    represented in it; either the result is implementation-defined        =
+=    or an implementation-defined signal is raised.                        =
+=                                                                          =
+============================================================================
+=   Note for C-Standard Type Conversion that is Relavant to this library.
+=
+=   For key 2(sign to unsigned) refer to
+=   (https://wiki.sei.cmu.edu/confluence/display/c/INT02-C.+Understand+integer+conversion+rules)
+=   From the information from the website, for two's complements, for 
+=   when destination and source are the same length, it simply mean copy
+=   the exact bit pattern from source to destination. 
+=  
+=   For key 3(unsigned to sign), do not go beyond the max positive range.
+=   Although v-mp is target built architecture both v-mp and v-basic must
+=   not have code that are implementation-defined.
+=  
+=   To give flexible to the user, in unsuccessful parse cases, the values
+=   of digits already parsed will be returned instead of 0. This offer
+=   compatibility and flexibility to users.
+=   
+=   On errors, a value of zero is given for NULL string, Empty String,
+=   and Sign only Strings.
+=   
+==========================================================================
+
+***********************Project Style Guide**********************************
+*                                                                          *
+*  Indent: 4;                                                              *      
+*                                                                          *
+*  One line condition or loop block                                        *
+*  1) If short can be on the same line.                                    *
+*  2) If split to two lines, the indentation for the statement line should *
+*     be the condition line stament's indentation + (indent / 2)           *
+*  3) Empty conditional block or loop should be enclose with {} and on the *
+*     same line. Exception to when the condition statement itself is       *
+*     too long and needed to be split into multiple lines. In that event,  *
+*     the {} brackets should be with the last line.                        *
+*                                                                          *
+*  Loop unrolling:                                                         *
+*  1) Loops are encourage to be unrolled if doing so offer better          *
+*     performance without sarcificing too much on code size or instruction *
+*     cache misses. Generally loops that are known to execute more than 10 *
+*     times shouldn't be unroll and should leave to the compiler to        *
+*     determine how to optimize that.                                      *
+*  2) When unrolling a loop, it should be done through macro, and the      *
+*     macro definition should be undefined right after the last            *
+*     usage.                                                               *
+*                                                                          *
+*  ** This style guideline maybe expand.                                   *
+*                                                                          *
+****************************************************************************
+
+
+

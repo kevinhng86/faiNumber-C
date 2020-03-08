@@ -1,0 +1,72 @@
+=========================START NO NULL CHECK=========================
+
+Take note that unless the description for a function stated otherwise,
+functions from this library DO NOT expect any null pointer as parameter. 
+
+No NULL Check Design Description:
+
+On a closer inspection at the parser functions, it is an assumption
+that for the common usage scenario, the users of this library,
+would commonly use the parsers to parse strings that are valid in
+memory address. The strings could be empty, could contain invalid
+character. Nonetheless, they are valid strings with valid  memory addresses.
+It is obvious that there isn't a point in setting up the call stack just
+to see if the input string is going to be a NULL string or not.
+That is done better with a condition evaluation statement prior
+to sending any string to this library's function. Thus, when
+the functions of this library encounter an input string that
+is a NULL Pointer, it is safe to assume that that is a programming
+error that can be fixed by the programmer or an intentional usage case
+without the realization of a better code path.
+
+When it come to the pointer for output, on legitimate usage cases that
+this library designed the intended use to be. The user should want
+to get the value from the parser. Thus, if the pointer to output is
+NULL, it is similar to the NULL Pointer of the input string.
+Whether another programming bug that can be fixed or a better
+code path that can be taken.
+
+For where a pointer to an error code is applicable, there are usage
+cases where there isn't a need to check the error code. However, to
+ensure secure number parsing, this library enforce that the users should
+be aware that the error code(s) are available on those functions. Whether,
+to ignore them or not is up to the programmer but their pointer must be
+pointing to a valid address. Take note that errno is not being used
+in this library.
+
+Bases on the above, of the common usage cases, it can be concluded that,
+if it is a programming error that should be fixed by the programmer
+and this library check that error and return an error code, that can
+degrade performance of this library while it can hide the programming
+bug in code that utilize this library if the programmers that utilize
+this library chose to ignore the error code that yielded by the functions
+of this library. 
+
+Setting signal handler, exiting, or aborting are other choices, but
+most if not all of the NULL Pointer errors that can be passed to
+functions of this library if check prior to calling any function
+in this library, would offer better performance than to setup a
+call stack just to check for NULL pointers. For another note,
+functions of this library may required the mentioned pointer 
+parameters or more to be pointing to valid addresses to function
+properly. Thus, they would treat NULL Pointer as another invalid memory
+address. Therefore, NULL Pointers to them would be invalid addresses.
+Thus, if these functions were to check for NULL pointers, should
+they also validate whether all input addresses are valid ones?
+
+Due to branch prediction, on modern CPU, checking for NULL Pointer
+will most likely cost very little to nothing for the intended usage
+cases where NULL is not encounter. It was tested on the 
+AMD A10-7800 APU that the NULL checks does not make much
+of a difference for parsing cases where all pointers are valid.
+Notwithstanding that, for a better design, NULL check shouldn't
+be offered where it is absolutely unnecessary as it can have an
+impact on hiding programming bugs or hiding a better code path
+from the users.
+
+SPECIAL NOTE: Notwithstanding the aboves, they do not limit the 
+current or future design of any of the functions of this library
+from run time aborting if any NULL Pointer is encountered. If that
+were to happen it will clearly be stated in the documentation.
+
+===================END NO NULL CHECK=========================

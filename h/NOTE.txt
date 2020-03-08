@@ -1,0 +1,4 @@
+If building or using the entire library, include faiNumber.h
+If building or using the 64 or 32-bit version, include faiNumber32.h or faiNumber64.h as appropriate.
+If building or using part of the library include their corresponding header file(s). 
+Note that faiNumber.h, its 64 or 32-bit versions, and any of faiNumber's individual header files can be included together.

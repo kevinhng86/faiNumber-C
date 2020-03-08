@@ -1,0 +1,10 @@
+Currently, faiNumber hasn't released a make file or build code for this library. Currently, there is only one version for faiNumber, and that is v-basic.
+
+To build faiNumber as a whole library, build all .c file in the "v-basic" folder. Otherwise, faiNumber can also be built individually by component. For example, if the only function needed is a function that can parse decimal to int64_t then build or build with "DecimalUtil64.c" in the "v-basic" folder.
+
+When building as a dynamic or static link library, to ensure compatibility with the official build naming context when the official build is available, follow the official naming context below:
+  1) faiNumber.suffix  - The entire library.
+  2) faiNumber32.suffix - The 32-bit part of the library.
+  3) faiNumber64.suffix - The 64-bit part of the library.
+  4) fn_{{component .c file name without extension}}.suffix - Individual component. For example fn_BinaryUtil32.so.
+  *** suffix is depended on system and the type of library, for example, .so, .dll, or .a.
